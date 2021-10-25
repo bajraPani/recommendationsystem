@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>transfer recommender</title>
+    <!-- link to Bootstrap minified css-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- link to Jquery minified-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- link to Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- link to external CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+
+<style>
+    .item1 {
+  grid-column-start: 1;
+  grid-column-end: 12;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 10px;
+  background-color: #21f3e2;
+  padding: 10px;
+}
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 10px 0;
+  font-size: 30px;
+}
+body {
+    
+    background-color: #8172c5;
+    background-image: url("/static/images/sd.png");
+  }
+table, th, td {
+  border: 1px solid black;
+  text-align: center;
+}
+th {
+  background-color: #04AA6D;
+  color: white;
+}
+
+</style>
+</head>
+<body>
+    <div id="banner-image">
+        <div class="container">
+            <form method="post">
+                <div id="banner_content">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Players</a></li>
+                    </ul><br><br><br>
+                    <div class="row no-margin">
+                        <div class="col-lg-4">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">AGE</div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="agefrom">From</label>
+                                        <input type="text" class="form-control" name="agefrom" value="{{ request.form['agefrom']}}">
+                                        <label for="ageto">To</label>
+                                        <input type="text" class="form-control" name="ageto" value="{{ request.form['ageto']}}">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <div class=" panel panel-danger ">
+                                <div class=" panel-heading ">PREFERRED FOOT</div>
+                                <div class=" panel-body ">
+                                    <div class=" checkbox ">
+                                        <label for="preferedfoot">Left</label><input type="checkbox" name="preferedfoot" value="left">
+                                        <label for="preferedfoot">Right</label><input type="checkbox" name="preferedfoot" value="right">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">POSITION</div>
+                                <div class="panel-body">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Position
+                                        </button>
+                                        <div class="form-group">
+                                            <div class="col-sm-6 col-md-4">
+                                                <select name="position" class="form-control">
+                                                    <option value="cf">CF</option>
+                                                    <option value="st">ST</option>
+                                                    <option value="lw">LW</option>
+                                                    <option value="cam">CAM</option>
+                                                    <option value="gk">GK</option>
+                                                    <option value="cb">CB</option>
+                                                    <option value="cdm">CDM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row no-margin">
+                        <div class="col-lg-4">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">POTENTIALS</div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="potential">potential</label>
+                                        <input type="text" class="form-control" name="potential" value="{{ request.form['potential'] }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+
+                    <input type="submit" value="Search" name="search" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="grid-container">
+        <div class="item1">RESULTS</div>
+        
+      </div>
+    <table>
+        <tr>
+            {% for col in column_names %}
+            <th>{{col}}</th>
+        
+            {% endfor %}
+        </tr>
+        {% for row in row_data %}
+        <tr>
+            {% for col, row_ in zip(column_names, row) %} {% if col == link_column %}
+            <td>
+                <a href="/player?id={{row_}}">
+                    {{ row_ }}
+                </a>
+            </td>
+            {% else %}
+            <td>      {{row_}}        </td>
+            {% endif %} {% endfor %}
+        </tr>
+        {% endfor %}
+
+    </table>
+</body>
+
+</html>
